@@ -2,6 +2,7 @@
 /**
  * Plugin Name: POT Generator
  * Description: Allows to generate POT for plugins and themes and compile PO to MO.
+ * Version: 0.1
  */
 
 add_action('admin_menu', function(){
