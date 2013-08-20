@@ -1,6 +1,6 @@
 {
     "name": "wemakecustom/wp-pot-generator",
-    "type": "wordpress-theme",
+    "type": "wordpress-plugin",
     "description": "Allows to generate POT for plugins and themes and compile PO to MO.",
     "license": "GPL-2.0",
     "authors": [
