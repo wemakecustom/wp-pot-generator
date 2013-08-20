@@ -1,0 +1,25 @@
+{
+    "name": "wemakecustom/wp-pot-generator",
+    "type": "wordpress-theme",
+    "description": "Allows to generate POT for plugins and themes and compile PO to MO.",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Sébastien Lavoie",
+            "email": "seb@wemakecustom.com",
+            "homepage": "http://www.wemakecustom.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "WMC\\Wordpress\\PotGenerator": "src/" }
+    },
+    "require": {
+        "composer/installers": "~1.0"
+    },
+    "suggest": {
+        "wemakecustom/wp-skeleton": "Wordpress Framework"
+    },
+    "extra": {
+        "installer-name": "pot-generator"
+    }
+}

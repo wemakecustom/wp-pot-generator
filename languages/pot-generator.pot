@@ -1,0 +1,17 @@
+# Copyright (C) 2013 POT Generator
+# This file is distributed under the same license as the POT Generator package.
+msgid ""
+msgstr ""
+"Project-Id-Version: POT Generator \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/plugin\n"
+"POT-Creation-Date: 2013-03-20 19:58:06+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2013-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#. Plugin Name of the plugin/theme
+msgid "POT Generator"
+msgstr ""
