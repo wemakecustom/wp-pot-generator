@@ -15,8 +15,8 @@ add_action('admin_menu', function(){
     );
 });
 
-
-function pot_generator_admin_page() {
+function pot_generator_admin_page()
+{
     $pot_generator = get_plugin_data(__FILE__);
 
     require __DIR__ . '/admin/page.php';

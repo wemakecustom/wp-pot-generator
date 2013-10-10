@@ -26,7 +26,6 @@ class Core extends Translatable
     {
         $id = trim(str_replace('wordpress', '', $this->id), '-');
         if ($id) $id .= '-';
-
         return "{$this->path}/$id$locale.po";
     }
 

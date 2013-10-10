@@ -8,13 +8,14 @@ use WMC\Wordpress\PotGenerator\Core;
 use WMC\Wordpress\PotGenerator\Theme;
 use WMC\Wordpress\PotGenerator\Plugin;
 
-
-class POT_Generator_Table extends WP_List_Table {
+class POT_Generator_Table extends WP_List_Table
+{
     /**
      * Constructor, we override the parent to pass our own arguments
      * We usually focus on three parameters: singular and plural labels, as well as whether the class supports AJAX.
      */
-     function __construct() {
+     function __construct()
+     {
          parent::__construct( array(
             'singular'=> 'theme', //Singular label
             'plural' => 'themes', //plural label, also this well be one of the table css class
@@ -27,7 +28,8 @@ class POT_Generator_Table extends WP_List_Table {
     //     return array('widefat', 'wp-list-table', 'themes');
     // }
 
-    function get_columns() {
+    public function get_columns()
+    {
         $columns = array(
             'cb'      => '<input type="checkbox" />',
             'type'    => __('Type'),
@@ -45,7 +47,8 @@ class POT_Generator_Table extends WP_List_Table {
         return $columns;
     }
 
-    function column_default($item, $column_name) {
+    public function column_default($item, $column_name)
+    {
         if (preg_match('/^lang_([a-z]+)/', $column_name, $matches)) {
             $languages = Translatable::getLanguages();
             $locale = $languages[$matches[1]];
@@ -68,12 +71,15 @@ class POT_Generator_Table extends WP_List_Table {
         return $item->$column_name;
     }
 
-    function column_strings($item) {
+    public function column_strings($item)
+    {
         $pot = $item->getPot();
+
         return $pot ? count($pot->entries) : '?';
     }
 
-    function column_cb($item) {
+    public function column_cb($item)
+    {
         return sprintf(
             '<input type="checkbox" name="export[%1$s][%2$s]" value="1" />',
             $item->type,
@@ -81,7 +87,8 @@ class POT_Generator_Table extends WP_List_Table {
         );
     }
 
-    function column_actions($item) {
+    public function column_actions($item)
+    {
         return sprintf(
             '<input type="submit" class="button-primary" name="export[%1$s][%2$s]" value="%3$s" />',
             $item->type,
@@ -90,9 +97,10 @@ class POT_Generator_Table extends WP_List_Table {
         );
     }
 
-    function prepare_items() {
+    public function prepare_items()
+    {
         global $_wp_column_headers;
-        
+
         $this->items = array_merge(
             Core::findAll(),
             Theme::findAll(),
@@ -105,10 +113,12 @@ class POT_Generator_Table extends WP_List_Table {
         $this->_column_headers = array($columns, $hidden, $sortable);
     }
 
-    function get_bulk_actions() {
+    public function get_bulk_actions()
+    {
         $actions = array(
             'update' => __('Update'),
         );
+
         return $actions;
     }
 }

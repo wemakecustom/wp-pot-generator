@@ -45,6 +45,7 @@ abstract class Translatable
         if (file_exists($file = $this->getPoFile($locale))) {
             $po = new \PO;
             $po->import_from_file($file);
+
             return $po;
         }
 
@@ -56,6 +57,7 @@ abstract class Translatable
         if (file_exists($file = $this->getMoFile($locale))) {
             $mo = new \MO;
             $mo->import_from_file($file);
+
             return $mo;
         }
 
@@ -154,6 +156,7 @@ abstract class Translatable
             $class = strtoupper($matches[1]); // PO or MO
             $loader = new $class;
             $loader->import_from_file($file);
+
             return $loader;
         }
 

@@ -30,6 +30,7 @@ class Plugin extends Translatable
         $plugins = get_plugins("/{$this->id}");
         if ($plugins) {
             $file = current(array_keys($plugins));
+
             return "{$this->path}/$file";
         } else {
             return false;

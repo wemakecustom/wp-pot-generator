@@ -23,6 +23,7 @@ class Theme extends Translatable
     protected function getPath()
     {
         $theme_root = get_theme_root($this->id);
+
         return "$theme_root/{$this->id}";
     }
 
@@ -51,6 +52,7 @@ class Theme extends Translatable
         $files = glob(WP_CONTENT_DIR . "/languages/themes/{$id}-{"."$locale,$lang"."}.{po,mo}", GLOB_BRACE);
 
         $files = array_merge(parent::getPossibleFiles($locale), $files);
+
         return $files;
     }
 

@@ -2,7 +2,6 @@
 
 namespace WMC\Wordpress\PotGenerator;
 
-use Composer\IO\IOInterface;
 use Composer\Script\Event;
 
 class ComposerHandler
