@@ -96,6 +96,7 @@ class MO extends Gettext_Translations {
 
 		fwrite($fh, $originals_table);
 		fwrite($fh, $translations_table);
+		fwrite($fh, PHP_EOL);
 		return true;
 	}
 

@@ -7,7 +7,7 @@ require_once __DIR__ . '/list.php';
 
         foreach ($_POST['export'] as $type => $items) {
             foreach (array_keys($items) as $id) {
-                $class = "Wmc\Wordpress\PotGenerator\\$type";
+                $class = "WMC\Wordpress\PotGenerator\\$type";
                 if (class_exists($class)) {
                     $item = new $class($id);
                     $item->export();
@@ -33,7 +33,7 @@ require_once __DIR__ . '/list.php';
     <?php _e($pot_generator['Description'], 'pot-generator'); ?>
 </p>
 
-<form method="post"> 
+<form method="post">
 <?php
     $wp_list_table = new POT_Generator_Table;
     $wp_list_table->prepare_items();

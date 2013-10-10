@@ -257,7 +257,7 @@ class MakePOT {
 	}
 
 	function wp_core($dir, $output) {
-		if ( file_exists( "$dir/wp-admin/user/about.php" ) ) return false;
+		if ( ! file_exists( "$dir/wp-admin/user/about.php" ) ) return false;
 
 		return $this->wp_generic( $dir, array(
 			'project' => 'wp-core', 'output' => $output,

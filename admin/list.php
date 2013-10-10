@@ -4,6 +4,7 @@ require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 use WMC\Wordpress\PotGenerator\Translatable;
+use WMC\Wordpress\PotGenerator\Core;
 use WMC\Wordpress\PotGenerator\Theme;
 use WMC\Wordpress\PotGenerator\Plugin;
 
@@ -93,6 +94,7 @@ class POT_Generator_Table extends WP_List_Table {
         global $_wp_column_headers;
         
         $this->items = array_merge(
+            Core::findAll(),
             Theme::findAll(),
             Plugin::findAll()
         );

@@ -3,8 +3,7 @@
 namespace WMC\Wordpress\PotGenerator;
 
 require_once ABSPATH . 'wp-admin/includes/plugin.php';
-require_once dirname(__DIR__) . '/makepot.php';
-
+require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/makepot.php';
 
 abstract class Translatable
 {
@@ -25,7 +24,10 @@ abstract class Translatable
 
     public function getPotFile()
     {
-        return "{$this->path}/languages/{$this->id}.pot";
+        $id = explode('/', $this->id);
+        $id = $id[count($id) - 1];
+
+        return "{$this->path}/languages/{$id}.pot";
     }
 
     public function getPoFile($locale)
@@ -105,12 +107,20 @@ abstract class Translatable
     public static function getLanguages()
     {
         global $sitepress;
-        $languages = $sitepress->get_languages();
         $return = array();
 
-        foreach ($languages as $language) {
-            if ($language['code'] != 'en' && $language['active'] == 1) {
-                $return[$language['code']] = $language['default_locale'];
+        if (isset($sitepress)) {
+            $languages = $sitepress->get_languages();
+            foreach ($languages as $language) {
+                if ($language['code'] != 'en' && $language['active'] == 1) {
+                    $return[$language['code']] = $language['default_locale'];
+                }
+            }
+        }
+
+        if (preg_match('/^([a-z]+)_([A-Z]+)$/', WPLANG, $matches)) {
+            if ($matches[1] != 'en') {
+                $return[$matches[1]] = $matches[0];
             }
         }
 
@@ -119,14 +129,20 @@ abstract class Translatable
 
     public function getExistingFile($locale)
     {
-        list($lang) = explode('_', $locale);
-        $files = glob("{$this->path}/{languages/,locale/,}*{"."$locale,$lang"."}.{po,mo}", GLOB_BRACE);
+        $files = $this->getPossibleFiles($locale);
 
         if ($files) {
             return $files[0];
         }
 
         return false;
+    }
+
+    public function getPossibleFiles($locale)
+    {
+        list($lang) = explode('_', $locale);
+
+        return glob("{$this->path}/{languages/,locale/,}*{"."$locale,$lang"."}.{po,mo}", GLOB_BRACE);
     }
 
     protected function loadExisting($locale)
@@ -203,5 +219,13 @@ abstract class Translatable
 
     abstract protected function getName();
     abstract public function makePot();
-    abstract public static function findAll();
+
+    public static function findAll()
+    {
+        return array_merge(
+            Core::findAll(),
+            Theme::findAll(),
+            Plugin::findAll()
+        );
+    }
 }

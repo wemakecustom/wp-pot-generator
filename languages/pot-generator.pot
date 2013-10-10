@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the POT Generator package.
 msgid ""
 msgstr ""
-"Project-Id-Version: POT Generator \n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/plugin\n"
-"POT-Creation-Date: 2013-03-20 19:58:06+00:00\n"
+"Project-Id-Version: POT Generator 0.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/pot-generator\n"
+"POT-Creation-Date: 2013-10-10 21:49:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,6 +12,32 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
+#: ../admin/list.php:33
+msgid "Type"
+msgstr ""
+
+#: ../admin/list.php:34
+msgid "Name"
+msgstr ""
+
+#: ../admin/list.php:35
+msgid "Strings"
+msgstr ""
+
+#: ../admin/list.php:43
+msgid "Actions"
+msgstr ""
+
+#: ../admin/list.php:89 ../admin/list.php:110
+msgid "Update"
+msgstr ""
+
+#. #-#-#-#-#  pot-generator.pot (POT Generator 0.1)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
+#: ../pot-generator.php:10 ../pot-generator.php:11
 msgid "POT Generator"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Allows to generate POT for plugins and themes and compile PO to MO."
 msgstr ""

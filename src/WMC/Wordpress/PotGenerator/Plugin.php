@@ -2,8 +2,6 @@
 
 namespace WMC\Wordpress\PotGenerator;
 
-require_once __DIR__ . '/Translatable.php';
-
 class Plugin extends Translatable
 {
     public $plugin;

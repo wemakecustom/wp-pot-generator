@@ -2,8 +2,6 @@
 
 namespace WMC\Wordpress\PotGenerator;
 
-require_once __DIR__ . '/Translatable.php';
-
 class Theme extends Translatable
 {
     public $theme;
@@ -42,6 +40,18 @@ class Theme extends Translatable
         }
 
         return $loader;
+    }
+
+    public function getPossibleFiles($locale)
+    {
+        list($lang) = explode('_', $locale);
+        $id = explode('/', $this->id);
+        $id = $id[count($id) - 1];
+
+        $files = glob(WP_CONTENT_DIR . "/languages/themes/{$id}-{"."$locale,$lang"."}.{po,mo}", GLOB_BRACE);
+
+        $files = array_merge(parent::getPossibleFiles($locale), $files);
+        return $files;
     }
 
     private function merge(\Gettext_Translations $current, Translatable $parent, $locale)
