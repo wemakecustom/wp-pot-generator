@@ -3,13 +3,14 @@
 namespace WMC\Wordpress\PotGenerator;
 
 use Composer\Script\Event;
+use Composer\Util\ErrorHandler;
 
 class ComposerHandler
 {
     public static function compile(Event $event)
     {
         // Wordpress is so buggy we need to disable error checking
-        $last_handler = set_error_handler(null);
+        restore_error_handler();
 
         $io       = $event->getIO();
         $composer = $event->getComposer();
@@ -30,7 +31,7 @@ class ComposerHandler
             }
         }
 
-        set_error_handler($last_handler);
+        ErrorHandler::register();
     }
 
     public static function downloadLanguages(Event $event)
@@ -38,7 +39,7 @@ class ComposerHandler
         global $wp_version;
 
         // Wordpress is so buggy we need to disable error checking
-        $last_handler = set_error_handler(null);
+        restore_error_handler();
 
         $io       = $event->getIO();
         $composer = $event->getComposer();
@@ -102,7 +103,7 @@ class ComposerHandler
 
         file_put_contents($index_file, json_encode($index));
 
-        set_error_handler($last_handler);
+        ErrorHandler::register();
     }
 
     private static function getSVNCommit($url)
