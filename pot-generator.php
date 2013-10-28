@@ -15,6 +15,11 @@ add_action('admin_menu', function(){
     );
 });
 
+// disable update checks for current locale since PO files are managed by composer.
+add_filter('core_version_check_locale', function() {
+    return 'en_US';
+});
+
 function pot_generator_admin_page()
 {
     $pot_generator = get_plugin_data(__FILE__);
