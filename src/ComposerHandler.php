@@ -18,20 +18,32 @@ class ComposerHandler
 
         $web_dir  = getcwd() . '/' . (empty($extras['web-dir']) ? 'htdocs' : $extras['web-dir']);
 
-        if (!defined('ABSPATH')) {
-            require_once $web_dir . '/wp-load.php';
-        }
-
         $io->write('<info>Compiling translations</info>');
 
+        if (!self::loadWordpress($io, $web_dir)) return;
+
         foreach (Translatable::findAll() as $translation) {
-            if (!($translation instanceof Core) && file_exists($translation->getPotFile())) {
+            if (!($translation instanceof Core) && $translation->isActive() !== false && file_exists($translation->getPotFile())) {
                 $translation->export();
                 $io->write(" • <info>{$translation->type}</info>: {$translation->id} {$stats['mo']}");
             }
         }
 
         ErrorHandler::register();
+    }
+
+    private static function loadWordpress($io, $web_dir)
+    {
+        if (!defined('ABSPATH')) {
+            require_once $web_dir . '/wp-load.php';
+        }
+
+        if (!is_blog_installed()) {
+            $io->write('<warning>Wordpress must be installed before PotGenerator can be ran.</warning>');
+            return false;
+        }
+
+        return true;
     }
 
     public static function downloadLanguages(Event $event)
@@ -47,9 +59,7 @@ class ComposerHandler
 
         $web_dir  = getcwd() . '/' . (empty($extras['web-dir']) ? 'htdocs' : $extras['web-dir']);
 
-        if (!defined('ABSPATH')) {
-            require_once $web_dir . '/wp-load.php';
-        }
+        if (!self::loadWordpress($io, $web_dir)) return;
 
         $io->write('<info>Downloading translations</info>');
 

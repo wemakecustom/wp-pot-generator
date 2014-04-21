@@ -51,6 +51,13 @@ class Plugin extends Translatable
         $makepot->wp_plugin($this->getPath(), $this->getPotFile(), $slug);
     }
 
+    public function isActive()
+    {
+        $file = preg_replace('/^.+\/([^\/]+\/[^\/]+\.php)$/', '$1', $this->getPluginFile());
+
+        return is_plugin_active($file);
+    }
+
     public static function findAll()
     {
         $plugins = array();

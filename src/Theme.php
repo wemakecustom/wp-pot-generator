@@ -79,6 +79,13 @@ class Theme extends Translatable
         $makepot->wp_theme($this->getPath(), $this->getPotFile());
     }
 
+    public function isActive()
+    {
+        $theme = wp_get_theme();
+
+        return $theme->name == $this->name || $theme->parent_theme == $this->name;
+    }
+
     public static function findAll()
     {
         $themes = array();

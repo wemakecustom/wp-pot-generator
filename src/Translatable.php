@@ -3,7 +3,7 @@
 namespace WMC\Wordpress\PotGenerator;
 
 require_once ABSPATH . 'wp-admin/includes/plugin.php';
-require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/makepot.php';
+require_once dirname(__DIR__) . '/makepot.php';
 
 abstract class Translatable
 {
@@ -18,6 +18,15 @@ abstract class Translatable
         $this->id   = $id;
         $this->path = $this->getPath();
         $this->url  = str_replace(ABSPATH, site_url() . '/', $this->getPath());
+    }
+
+    /**
+     * Wether the plugin/theme is active.
+     * @return boolean|null null if unknown
+     */
+    public function isActive()
+    {
+        return null;
     }
 
     abstract protected function getPath();
@@ -109,7 +118,12 @@ abstract class Translatable
     public static function getLanguages()
     {
         global $sitepress;
+
         $return = array();
+
+        if (!$sitepress) {
+            return $return;
+        }
 
         if (isset($sitepress)) {
             $languages = $sitepress->get_languages();

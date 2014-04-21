@@ -1,34 +1,34 @@
-# Copyright (C) 2013 POT Generator
+# Copyright (C) 2014 POT Generator
 # This file is distributed under the same license as the POT Generator package.
 msgid ""
 msgstr ""
 "Project-Id-Version: POT Generator 0.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/pot-generator\n"
-"POT-Creation-Date: 2013-10-10 21:49:18+00:00\n"
+"POT-Creation-Date: 2014-04-21 20:00:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2013-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: ../admin/list.php:33
+#: ../admin/list.php:35
 msgid "Type"
 msgstr ""
 
-#: ../admin/list.php:34
+#: ../admin/list.php:36
 msgid "Name"
 msgstr ""
 
-#: ../admin/list.php:35
+#: ../admin/list.php:37
 msgid "Strings"
 msgstr ""
 
-#: ../admin/list.php:43
+#: ../admin/list.php:45
 msgid "Actions"
 msgstr ""
 
-#: ../admin/list.php:89 ../admin/list.php:110
+#: ../admin/list.php:96 ../admin/list.php:119
 msgid "Update"
 msgstr ""
 
