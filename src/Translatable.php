@@ -121,10 +121,6 @@ abstract class Translatable
 
         $return = array();
 
-        if (!$sitepress) {
-            return $return;
-        }
-
         if (isset($sitepress)) {
             $languages = $sitepress->get_languages();
             foreach ($languages as $language) {
@@ -158,7 +154,7 @@ abstract class Translatable
     {
         list($lang) = explode('_', $locale);
 
-        return glob("{$this->path}/{languages/,locale/,}*{"."$locale,$lang"."}.{po,mo}", GLOB_BRACE);
+        return glob('{' . WP_LANG_DIR . "/{$this->id}/*{"."$locale,$lang"."}.{po,mo},{$this->path}/{languages/,locale/,}*{"."$locale,$lang"."}.{po,mo}" . '}', GLOB_BRACE);
     }
 
     protected function loadExisting($locale)
