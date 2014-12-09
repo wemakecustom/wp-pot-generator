@@ -25,7 +25,7 @@ class ComposerHandler
         foreach (Translatable::findAll() as $translation) {
             if (!($translation instanceof Core) && $translation->isActive() !== false && file_exists($translation->getPotFile())) {
                 $translation->export();
-                $io->write(" • <info>{$translation->type}</info>: {$translation->id} {$stats['mo']}");
+                $io->write(" • <info>{$translation->type}</info>: {$translation->id}");
             }
         }
 
