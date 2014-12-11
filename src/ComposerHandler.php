@@ -4,125 +4,32 @@ namespace WMC\Wordpress\PotGenerator;
 
 use Composer\Script\Event;
 use Composer\Util\ErrorHandler;
+use WMC\Composer\Utils\Composer\PackageLocator;
 
 class ComposerHandler
 {
     public static function compile(Event $event)
     {
-        // Wordpress is so buggy we need to disable error checking
-        restore_error_handler();
-
-        $io       = $event->getIO();
         $composer = $event->getComposer();
         $extras   = $composer->getPackage()->getExtra();
-
         $web_dir  = getcwd() . '/' . (empty($extras['web-dir']) ? 'htdocs' : $extras['web-dir']);
 
-        $io->write('<info>Compiling translations</info>');
-
-        if (!self::loadWordpress($io, $web_dir)) return;
-
-        foreach (Translatable::findAll() as $translation) {
-            if (!($translation instanceof Core) && $translation->isActive() !== false && file_exists($translation->getPotFile())) {
-                $translation->export();
-                $io->write(" • <info>{$translation->type}</info>: {$translation->id}");
-            }
-        }
-
-        ErrorHandler::register();
-    }
-
-    private static function loadWordpress($io, $web_dir)
-    {
-        if (!defined('ABSPATH')) {
-            require_once $web_dir . '/wp-load.php';
-        }
-
-        if (!is_blog_installed()) {
-            $io->write('<warning>Wordpress must be installed before PotGenerator can be ran.</warning>');
-            return false;
-        }
-
-        return true;
+        self::wpCli($composer, $web_dir, 'pot compile');
     }
 
     public static function downloadLanguages(Event $event)
     {
-        global $wp_version;
-
-        // Wordpress is so buggy we need to disable error checking
-        restore_error_handler();
-
-        $io       = $event->getIO();
         $composer = $event->getComposer();
         $extras   = $composer->getPackage()->getExtra();
-
         $web_dir  = getcwd() . '/' . (empty($extras['web-dir']) ? 'htdocs' : $extras['web-dir']);
 
-        if (!self::loadWordpress($io, $web_dir)) return;
-
-        $io->write('<info>Downloading translations</info>');
-
-        preg_match('/^\d+\.\d+/', $wp_version, $matches);
-        $branch = $matches[0];
-
-        $svn = "http://i18n.svn.wordpress.org";
-        $index_file = "$web_dir/wp-content/languages/cache.json";
-        $index = array();
-
-        if (file_exists($index_file)) {
-            $index = json_decode(file_get_contents($index_file), true);
-        }
-
-        $files = array(
-            "$svn/pot/branches/$branch/wordpress-admin-network.pot",
-            "$svn/pot/branches/$branch/wordpress-admin.pot",
-            "$svn/pot/branches/$branch/wordpress-continents-cities.pot",
-            "$svn/pot/branches/$branch/wordpress.pot",
-        );
-
-        $languages = Translatable::getLanguages();
-
-        foreach ($languages as $locale) {
-            foreach (array('admin-', 'admin-network-', 'continents-cities-', '') as $key) {
-                $files[] = "$svn/$locale/branches/$branch/messages/$key$locale.po";
-                $files[] = "$svn/$locale/branches/$branch/messages/$key$locale.mo";
-            }
-        }
-
-        foreach ($files as $source) {
-            // @TODO use the SVN headers to only download when needed
-            $filename = basename($source);
-            $target = "$web_dir/wp-content/languages/$filename";
-            $commit = self::getSVNCommit($source);
-
-            if (file_exists($target) && isset($index[$filename])) {
-                if ($index[$filename] == $commit) {
-                    break;
-                } else {
-                    $io->write(" • Updating <info>$filename</info>");
-                }
-            } else {
-                $io->write(" • Downloading <info>$filename</info>");
-            }
-
-            $data = file_get_contents($source);
-            $index[$filename] = $commit;
-            file_put_contents($target, $data);
-        }
-
-        file_put_contents($index_file, json_encode($index));
-
-        ErrorHandler::register();
+        self::wpCli($composer, $web_dir, 'pot download');
     }
 
-    private static function getSVNCommit($url)
+    private static function wpCli($composer, $web_dir, $command)
     {
-        $headers = get_headers($url, true);
-        if (isset($headers['ETag']) && preg_match('/^(\d+)/', trim($headers['ETag'], '\'"'), $matches)) {
-            return (int) $matches[1];
-        }
+        $cliPath = PackageLocator::getPackagePath($composer, 'wp-cli/wp-cli');
 
-        return null;
+        passthru("bin/wp --path='${web_dir}' ${command}");
     }
 }

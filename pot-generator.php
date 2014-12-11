@@ -30,3 +30,7 @@ function pot_generator_admin_page()
     // $generator->export_plugin('gravityforms', 'gravityforms');
     return;
 }
+
+if ( defined('WP_CLI') && WP_CLI ) {
+    WP_CLI::add_command( 'pot', 'WMC\Wordpress\PotGenerator\Command\PotCommand' );
+}
