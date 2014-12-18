@@ -15,9 +15,39 @@ class Theme extends Translatable
         $this->name = $this->getName();
     }
 
+    public function getDomain()
+    {
+        if ($this->theme->get('TextDomain')) {
+            return $this->theme->get('TextDomain');
+        }
+
+        return parent::getDomain();
+    }
+
+    public function getDomainPath()
+    {
+        $paths = parent::getDomainPath();
+
+        if ($this->theme->get('DomainPath')) {
+            $path = trim($this->theme->get('DomainPath'), '/') . '/';
+            if (array_search($path, $paths) === false) {
+                $paths[] = $path;
+            }
+        }
+
+        return $paths;
+    }
+
     protected function getName()
     {
         return $this->theme->name;
+    }
+
+    public function getPotFile()
+    {
+        $slug = $this->getSlug();
+
+        return WP_LANG_DIR . "/themes/${slug}.pot";
     }
 
     protected function getPath()
@@ -41,19 +71,6 @@ class Theme extends Translatable
         }
 
         return $loader;
-    }
-
-    public function getPossibleFiles($locale)
-    {
-        list($lang) = explode('_', $locale);
-        $id = explode('/', $this->id);
-        $id = $id[count($id) - 1];
-
-        $files = glob(WP_CONTENT_DIR . "/languages/themes/{$id}-{"."$locale,$lang"."}.{po,mo}", GLOB_BRACE);
-
-        $files = array_merge(parent::getPossibleFiles($locale), $files);
-
-        return $files;
     }
 
     private function merge(\Gettext_Translations $current, Translatable $parent, $locale)

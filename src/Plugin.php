@@ -15,14 +15,39 @@ class Plugin extends Translatable
         $this->name = $this->getName();
     }
 
+    public function getDomain()
+    {
+        if (isset($this->plugin['TextDomain'])) {
+            return $this->plugin['TextDomain'];
+        }
+
+        return parent::getDomain();
+    }
+
+    public function getDomainPath()
+    {
+        $paths = parent::getDomainPath();
+
+        if (isset($this->plugin['DomainPath'])) {
+            $path = trim($this->plugin['DomainPath'], '/') . '/';
+            if (array_search($path, $paths) === false) {
+                $paths[] = $path;
+            }
+        }
+
+        return $paths;
+    }
+
     protected function getName()
     {
         return $this->plugin['Name'];
     }
 
-    public function getPoFile($locale)
+    public function getPotFile()
     {
-        return "{$this->path}/languages/{$this->id}-$locale.po";
+        $slug = $this->getSlug();
+
+        return WP_LANG_DIR . "/plugins/${slug}.pot";
     }
 
     protected function getPluginFile()

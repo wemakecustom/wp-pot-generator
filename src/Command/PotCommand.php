@@ -3,6 +3,8 @@
 namespace WMC\Wordpress\PotGenerator\Command;
 
 use WMC\Wordpress\PotGenerator\Translatable;
+use WMC\Wordpress\PotGenerator\Plugin;
+use WMC\Wordpress\PotGenerator\Theme;
 use WMC\Wordpress\PotGenerator\Core;
 
 /**
@@ -17,7 +19,7 @@ class PotCommand extends \WP_CLI_Command {
         \WP_CLI::line('Compiling translations');
 
         foreach (Translatable::findAll() as $translation) {
-            if (!($translation instanceof Core) && $translation->isActive() !== false && file_exists($translation->getPotFile())) {
+            if (!($translation instanceof Core) && $translation->isActive() !== false) {
                 @$translation->export();
                 \WP_CLI::line(" • {$translation->type}: {$translation->id}");
             }

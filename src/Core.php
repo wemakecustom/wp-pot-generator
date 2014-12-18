@@ -6,7 +6,7 @@ class Core extends Translatable
 {
     public $type = 'Core';
 
-    public function __construct($id)
+    public function __construct($id = '')
     {
         parent::__construct($id);
         $this->name = $this->getName();
@@ -15,11 +15,6 @@ class Core extends Translatable
     protected function getName()
     {
         return ucwords(str_replace('-', ' ', $this->id));
-    }
-
-    public function getPotFile()
-    {
-        return "{$this->path}/{$this->id}.pot";
     }
 
     public function getPoFile($locale)

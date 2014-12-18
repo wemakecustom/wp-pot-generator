@@ -15,9 +15,9 @@ abstract class Translatable
 
     public function __construct($id)
     {
-        $this->id   = $id;
-        $this->path = $this->getPath();
-        $this->url  = str_replace(ABSPATH, site_url() . '/', $this->getPath());
+        $this->id     = $id;
+        $this->path   = $this->getPath();
+        $this->url    = str_replace(ABSPATH, site_url() . '/', $this->getPath());
     }
 
     /**
@@ -31,17 +31,44 @@ abstract class Translatable
 
     abstract protected function getPath();
 
-    public function getPotFile()
+    public function getSlug()
     {
         $id = explode('/', $this->id);
-        $id = $id[count($id) - 1];
 
-        return "{$this->path}/languages/{$id}.pot";
+        return $id[0];
+    }
+
+    public function getDomain()
+    {
+        return $this->getSlug();
+    }
+
+    public function getDomainPath()
+    {
+        return array(
+            'languages/',
+            'locale/',
+            'lang/',
+            '',
+        );
+    }
+
+    public function getLangPath()
+    {
+        return WP_LANG_DIR . '/' . $this->getName();
+    }
+
+
+    public function getPotFile()
+    {
+        $slug = $this->getSlug();
+
+        return WP_LANG_DIR . "/${slug}.pot";
     }
 
     public function getPoFile($locale)
     {
-        return "{$this->path}/languages/$locale.po";
+        return preg_replace('/\.pot$/', "-${locale}.po", $this->getPotFile());
     }
 
     public function getMoFile($locale)
@@ -152,9 +179,18 @@ abstract class Translatable
 
     public function getPossibleFiles($locale)
     {
+        $slug = $this->getSlug();
         list($lang) = explode('_', $locale);
 
-        return glob('{' . WP_LANG_DIR . "/{$this->id}/*{"."$locale,$lang"."}.{po,mo},{$this->path}/{languages/,locale/,}*{"."$locale,$lang"."}.{po,mo}" . '}', GLOB_BRACE);
+        $prefix     = preg_replace('/\.pot$/', '', $this->getPotFile());
+        $suffix     = '{' . "$locale,$lang" . '}';
+        $extension  = '{po,mo}';
+        $domainPath = '{' . implode(',', $this->getDomainPath()) . '}';
+
+         return glob('{'
+            . "${prefix}-${suffix}.${extension},"
+            . "{$this->path}/${domainPath}*${suffix}.${extension}"
+            . '}', GLOB_BRACE);
     }
 
     protected function loadExisting($locale)
