@@ -88,12 +88,10 @@ class Theme extends Translatable
         }
     }
 
-    public function makePot()
+    protected function makePot($path, $pot_file)
     {
-        $this->prepareExport();
-
         $makepot = new \MakePOT;
-        $makepot->wp_theme($this->getPath(), $this->getPotFile());
+        $makepot->wp_theme($path, $pot_file);
     }
 
     public function isActive()

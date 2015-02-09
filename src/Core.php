@@ -29,7 +29,12 @@ class Core extends Translatable
         return WP_CONTENT_DIR . '/languages';
     }
 
-    public function makePot()
+    protected function makePot($path, $pot_file)
+    {
+        // skip
+    }
+
+    public function compilePot()
     {
         // skip
     }

@@ -15,9 +15,9 @@ abstract class Translatable
 
     public function __construct($id)
     {
-        $this->id     = $id;
-        $this->path   = $this->getPath();
-        $this->url    = str_replace(ABSPATH, site_url() . '/', $this->getPath());
+        $this->id   = $id;
+        $this->path = $this->getPath();
+        $this->url  = str_replace(ABSPATH, site_url() . '/', $this->getPath());
     }
 
     /**
@@ -104,7 +104,7 @@ abstract class Translatable
     {
         if (!file_exists($this->getPotFile())) {
             if ($create) {
-                $this->makePot();
+                $this->compilePot();
             } else {
                 return false;
             }
@@ -212,7 +212,7 @@ abstract class Translatable
     public function export()
     {
         $this->prepareExport();
-        $this->makePot(); // Force
+        $this->compilePot(); // Force
         $pot = $this->getPot(true);
 
         foreach (static::getLanguages() as $code => $locale) {
@@ -233,7 +233,7 @@ abstract class Translatable
                 }
             }
 
-            $po->export_to_file($po_file);
+            $po->export_to_file($po_file, false);
 
             if ($has_content) {
                 static::compilePo($po_file, $mo_file);
@@ -254,6 +254,19 @@ abstract class Translatable
         $mo->export_to_file($mo_file);
     }
 
+    public function compilePot()
+    {
+        $this->prepareExport();
+        $path = $this->getPath();
+        $pot_file = $this->getPotFile();
+        $this->makePot($path, $pot_file);
+
+        // remove headers
+        $po = new \PO;
+        $po->import_from_file($pot_file);
+        $po->export_to_file($pot_file, false);
+    }
+
     protected function prepareExport()
     {
         $pot_dir = dirname($this->getPotFile());
@@ -267,12 +280,11 @@ abstract class Translatable
     }
 
     abstract protected function getName();
-    abstract public function makePot();
+    abstract protected function makePot($path, $pot_file);
 
     public static function findAll()
     {
         return array_merge(
-            Core::findAll(),
             Theme::findAll(),
             Plugin::findAll()
         );

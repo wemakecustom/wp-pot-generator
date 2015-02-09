@@ -19,7 +19,7 @@ class PotCommand extends \WP_CLI_Command {
         \WP_CLI::line('Compiling translations');
 
         foreach (Translatable::findAll() as $translation) {
-            if (!($translation instanceof Core) && $translation->isActive() !== false) {
+            if ($translation->isActive() !== false) {
                 @$translation->export();
                 \WP_CLI::line(" • {$translation->type}: {$translation->id}");
             }

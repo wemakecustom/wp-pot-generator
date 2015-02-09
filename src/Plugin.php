@@ -67,13 +67,11 @@ class Plugin extends Translatable
         return WP_PLUGIN_DIR . "/{$this->id}";
     }
 
-    public function makePot()
+    protected function makePot($path, $pot_file)
     {
-        $this->prepareExport();
-
         $makepot = new \MakePOT;
         $slug = preg_replace("!^{$this->path}/(.*)\.php!", '$1', $this->getPluginFile());
-        $makepot->wp_plugin($this->getPath(), $this->getPotFile(), $slug);
+        $makepot->wp_plugin($path, $pot_file, $slug);
     }
 
     public function isActive()
